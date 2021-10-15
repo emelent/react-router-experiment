@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -113,14 +113,24 @@ function ProfileContainer() {
     );
   };
 
+  let history = useHistory();
+  const onClick = () => {
+    history.push("/about", { extra: "spice" });
+  };
+
   return (
-    <MemoryRouter>
-      <Switch>
-        <Route path="/editName" component={NameEditor} />
-        <Route path="/editAge" component={AgeEditor} />
-        <Route exact path="/" component={Main} />
-      </Switch>
-    </MemoryRouter>
+    <div>
+      <Link to="/">A way home</Link>
+      <br />
+      <button onClick={onClick}>About with extra stuff</button>
+      <MemoryRouter>
+        <Switch>
+          <Route path="/editName" component={NameEditor} />
+          <Route path="/editAge" component={AgeEditor} />
+          <Route exact path="/" component={Main} />
+        </Switch>
+      </MemoryRouter>
+    </div>
   );
 }
 
@@ -138,6 +148,9 @@ function Profile({ name, onNameEditClick, age, onAgeEditClick }) {
 function InputEditor({ initialInput, type = "text", onSaveInputClick }) {
   const [input, setInput] = useState(initialInput);
 
+  useEffect(() => {
+    console.log(`InputEditor<${type}>::mounted`);
+  }, [type]);
   const handleChange = (e) => setInput(e.target.value);
   const handleSaveClick = () => onSaveInputClick(input);
 
