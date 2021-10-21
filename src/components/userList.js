@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react'
 
 
-const userToComponent = (user)  => (
-    <div key={user.id}>
+const userToComponent = (onUserClicked) => (user, index)  => (
+    <div key={user.id} onClick={() => onUserClicked(index)}>
         <div>{user.name}</div> 
         <div>{user.email}</div> 
         <hr />
     </div>
 )
 
-export default function UserList({users, onUsersChanged, fetchUsersUseCase}){
+export default function UserList({
+    users,
+    onUsersChanged,
+    onUserClicked,
+    fetchUsersUseCase,
+    // loading,
+    // onLoadingChanged
+}){
 
-    const [loading, setLoading] = useState(false) 
     const [abortController] = useState(new AbortController())
+    const [loading, setLoading] = useState(false)
 
     const refreshUsers = () => {
         setLoading(true)
@@ -22,6 +29,7 @@ export default function UserList({users, onUsersChanged, fetchUsersUseCase}){
     }
 
     useEffect(() => {
+        console.log("new abortController =>", abortController)
         return () => {
             // cancel network call
             console.log("cancelling network call")
@@ -32,7 +40,7 @@ export default function UserList({users, onUsersChanged, fetchUsersUseCase}){
     return (
         <div>
             {loading && "Loading ..."}
-            {!loading && users.map(userToComponent)}
+            {!loading && users.map(userToComponent(onUserClicked))}
             <br/>
             <br/>
             {!loading && (
