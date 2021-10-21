@@ -9,6 +9,7 @@ import {
 import InputEditor from '../components/inputEditor'
 import Profile from '../components/profile'
 
+
 export default function ProfileContainer() {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);

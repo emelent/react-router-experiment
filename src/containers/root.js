@@ -3,31 +3,19 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from "react-router-dom";
 
 import Home from '../components/home'
 import About from '../components/about'
+import NavBar from '../components/navBar'
 import ProfileContainer from '../containers/profileContainer'
+import UsersContainer from '../containers/usersContainer'
 
 export default function Root() {
   return (
     <Router>
       <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-        </ul>
-
-        <hr />
-
+        <NavBar />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -38,6 +26,7 @@ export default function Root() {
           <Route path="/profile">
             <ProfileContainer />
           </Route>
+          <Route path="/users" component={UsersContainer}/>
         </Switch>
       </div>
     </Router>
