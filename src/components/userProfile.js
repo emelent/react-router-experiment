@@ -13,7 +13,7 @@ export default function UserProfile({
         <span>{user.email || "<No emal>"} </span>
         <button onClick={onEmailEditClick}>Edit</button> <br />
         <br/>
-        <button onClick={}>Done</button>
+        <button onClick={onDoneClick}>Done</button>
       </div>
     );
   }

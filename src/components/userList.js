@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useInteractor } from '../hooks/interactor';
 
 
 const userToComponent = (onUserClicked) => (user, index)  => (
@@ -22,18 +21,10 @@ function useCounter() {
 
 export default function UserList({
     users,
-    onUsersChanged,
     onUserClicked,
-    fetchUsersUseCase,
-    // loading,
-    // onLoadingChanged
+    fetchUsers,
+    loading,
 }){
-    const [loading, refreshUsers] = useInteractor(
-        fetchUsersUseCase, 
-        onUsersChanged,
-        err => console.log("network failed =>", err)
-    )
-
     const [count, setCount] = useCounter()
     const counterClick = () => setCount(count + 1)
 
@@ -44,7 +35,7 @@ export default function UserList({
             <br/>
             <br/>
             {!loading && (
-                <button onClick={refreshUsers}>Refresh Users</button>
+                <button onClick={fetchUsers}>Fetch Users</button>
             )}
             <br/>
             <br/>
