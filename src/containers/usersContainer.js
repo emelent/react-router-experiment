@@ -10,8 +10,6 @@ import { createFetchUsersUseCase } from '../api/usersApi';
 import UserList from '../components/userList'
 
 
-const abortController = new AbortController()
-
 export default function UsersContainer() {
     // state
     const [users, setUsers] = useState([])

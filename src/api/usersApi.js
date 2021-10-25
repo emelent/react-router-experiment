@@ -1,8 +1,3 @@
-import {
-    throwNetworkErrorOperator,
-    toJsonOperator
-} from "../networking/helpers"
-
 const baseUrl = 'https://jsonplaceholder.typicode.com/users'
 
 export const createFetchCaller =
@@ -14,8 +9,6 @@ export function createFetchUsersUseCase() {
     return (abortController) => fetch(baseUrl, {
             signal: abortController.signal
         })
-        .then(throwNetworkErrorOperator)
-        .then(toJsonOperator)
 }
 
 

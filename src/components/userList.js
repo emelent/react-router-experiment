@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useInteractor } from '../hooks/interactor';
 
 
 const userToComponent = (onUserClicked) => (user, index)  => (
@@ -9,6 +10,16 @@ const userToComponent = (onUserClicked) => (user, index)  => (
     </div>
 )
 
+function useCounter() {
+    const [count, setCount] = useState(0)
+    useEffect(() => {
+        console.log(`You clicked ${count} times`)
+    }, [count]);
+
+    return [count, setCount]
+}
+
+
 export default function UserList({
     users,
     onUsersChanged,
@@ -17,25 +28,14 @@ export default function UserList({
     // loading,
     // onLoadingChanged
 }){
+    const [loading, refreshUsers] = useInteractor(
+        fetchUsersUseCase, 
+        onUsersChanged,
+        err => console.log("network failed =>", err)
+    )
 
-    const [abortController] = useState(new AbortController())
-    const [loading, setLoading] = useState(false)
-
-    const refreshUsers = () => {
-        setLoading(true)
-        fetchUsersUseCase(abortController)
-            .then(onUsersChanged)
-            .finally(() => setLoading(false))
-    }
-
-    useEffect(() => {
-        console.log("new abortController =>", abortController)
-        return () => {
-            // cancel network call
-            console.log("cancelling network call")
-            abortController.abort()
-        }
-    }, [abortController])
+    const [count, setCount] = useCounter()
+    const counterClick = () => setCount(count + 1)
 
     return (
         <div>
@@ -48,6 +48,10 @@ export default function UserList({
             )}
             <br/>
             <br/>
+            <p>You clicked {count} times</p>
+            <button onClick={counterClick}>
+                Click me
+            </button>
         </div>
     )
 }
