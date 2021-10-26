@@ -3,12 +3,14 @@ import {
   Switch,
   Route,
   MemoryRouter,
-  useHistory
+  useHistory,
+  useLocation
 } from "react-router-dom";
-import { createFetchUsersUseCase } from '../api/usersApi';
+import { createFetchUsersUseCase, fetchUsersInteractor } from '../api/usersApi';
 import InputEditor from '../components/inputEditor';
 
 import UserList from '../components/userList'
+import UserList2 from '../components/userList2';
 import UserProfile from '../components/userProfile';
 import { useInteractor } from '../hooks/interactor';
 
@@ -18,7 +20,10 @@ export default function UsersContainer() {
     const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState()
 
-    const [fetchUsersLoading, fetchUsers] = useInteractor(createFetchUsersUseCase(), setUsers)
+    // const fetchUsersUseCase = createFetchUsersUseCase()
+    const [fetchUsersLoading, fetchUsers] = useInteractor(fetchUsersInteractor, {
+        onSuccess: setUsers
+    })
 
     // views
 
@@ -81,7 +86,7 @@ export default function UsersContainer() {
         const history = useHistory()
         const onUserClicked = (index) => {
             setCurrentUser({index, data: users[index]})
-            history.push('/view/user')
+            history.push('/edit/user')
         }
 
         return (
@@ -93,15 +98,38 @@ export default function UsersContainer() {
             />
         )
     }
+    // const ViewAllUsers2 = () => {
+    //     const history = useHistory()
+    //     const onUserClicked = (index) => {
+    //         setCurrentUser({index, data: users[index]})
+    //         history.push('/view/user')
+    //     }
+
+    //     return (
+    //         <UserList2
+    //             users={users}
+    //             onUsersChanged={setUsers}
+    //             onUserClicked={onUserClicked}
+    //             fetchUsersUseCase={fetchUsersUseCase}
+    //         />
+    //     )
+    // }
+
+    const LocationLogger = () => {
+        const location = useLocation()
+        console.log("locationPath =>", location.pathname)
+        return null
+    }
 
     return (
     <MemoryRouter>
         <Switch>
             <Route exact path="/" component={ViewAllUsers} />
-            <Route path="/view/user" component={ViewUser} />
-            <Route path="/edit/user/email" component={EditUserEmail} />
-            <Route path="/edit/user/name" component={EditUserName} />
+            <Route exact path="/edit/user" component={ViewUser} />
+            <Route exact path="/edit/user/email" component={EditUserEmail} />
+            <Route exact path="/edit/user/name" component={EditUserName} />
         </Switch>
+        <LocationLogger />
     </MemoryRouter>
     );
 }

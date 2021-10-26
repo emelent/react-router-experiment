@@ -1,3 +1,5 @@
+import { NetworkError } from "./networkError"
+
 /**
  * Throws a NetworkError on unsuccessful network response.
  * 
@@ -11,18 +13,18 @@ export function throwNetworkErrorOperator(response) {
 }
 
 /**
- * Parse response to JSON
+ * Parse response from JSON
  * @param response Fetch API response
- * @returns {Response}
+ * @returns {Response} an object
  */
 export function toJsonOperator(response) {
     return response.json()
 }
 
 /**
- * Log response
+ * Logs 
  * @param response Fetch API response
- * @returns {Response}
+ * @returns {Response} 
  */
 export function logOperator(response) {
     console.log("response =>", response)
@@ -49,10 +51,3 @@ export function toJsonSafeOperator(response) {
     return pipe(response, [throwNetworkErrorOperator, toJsonOperator])
 }
 
-export class NetworkError extends Error {
-    constructor(response, message) {
-        super(message? message: `${response.status}:${response.url}`)
-        this.url = response.url
-        this.status = response.status
-    }
-}

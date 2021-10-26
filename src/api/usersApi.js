@@ -1,3 +1,5 @@
+import { jsonFetch } from "./fetch/wrappers"
+
 const baseUrl = 'https://jsonplaceholder.typicode.com/users'
 
 export const createFetchCaller =
@@ -5,17 +7,21 @@ export const createFetchCaller =
     () => fetch(request, requestInfo)
 
 
-export function createFetchUsersUseCase() {
-    return (abortController) => fetch(baseUrl, {
-            signal: abortController.signal
-        })
+// export function createFetchUsersUseCase() {
+//     return (abortController) => fetch(baseUrl, {
+//             signal: abortController.signal
+//         })
+// }
+
+export function fetchUsersInteractor(signal) {
+    return jsonFetch(baseUrl, {signal})
 }
 
 
-export function createSaveUserUseCase() {
-    return (user) => new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(user)
-        }, 3000)
-    })
-}
+// export function createSaveUserUseCase() {
+//     return (user) => new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(user)
+//         }, 3000)
+//     })
+// }
