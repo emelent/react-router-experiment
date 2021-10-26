@@ -38,7 +38,7 @@ export function logOperator(response) {
  * @param {[operators]} operators List of operators 
  * @returns {Response}
  */
-export function pipe(response, operators) {
+export function pipe(response, ...operators) {
     return operators.reduce((currOp, nextOp) => nextOp(currOp), response)
 }
 
@@ -48,6 +48,6 @@ export function pipe(response, operators) {
  * @returns 
  */
 export function toJsonSafeOperator(response) {
-    return pipe(response, [throwNetworkErrorOperator, toJsonOperator])
+    return pipe(response, throwNetworkErrorOperator, toJsonOperator)
 }
 
